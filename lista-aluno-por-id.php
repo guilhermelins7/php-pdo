@@ -5,11 +5,10 @@ use Alura\Pdo\Domain\Model\Student;
 require_once 'vendor/autoload.php';
 
 // ID DE BUSCA:
-$id = 1;
+$id = 5;
 
 $caminhoBanco = __DIR__ . '/banco.sqlite';
 $pdo = new PDO('sqlite:' . $caminhoBanco);
-
 
 $result = $pdo->query( "SELECT * FROM students WHERE id = $id;");
 
@@ -20,5 +19,5 @@ if ($studentData = $result->fetch(PDO::FETCH_ASSOC)) {
         new DateTimeImmutable($studentData['birth_date'])
     );
 
-    echo $student->age() . PHP_EOL;
+    echo $student->name() . PHP_EOL;
 }

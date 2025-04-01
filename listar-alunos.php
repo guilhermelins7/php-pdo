@@ -13,6 +13,8 @@ $result = $pdo->query( 'SELECT * FROM students;');
 $studentDataList = $result->fetchAll(PDO::FETCH_ASSOC);
 $studentList = [];
 
+var_dump($studentDataList); exit;
+
 foreach ( $studentDataList as $studentData) {
     $studentList[] = new Student(
         $studentData['id'],
