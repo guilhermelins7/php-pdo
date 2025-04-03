@@ -4,8 +4,8 @@ use Alura\Pdo\Domain\Model\Student;
 
 require_once 'vendor/autoload.php';
 
-// ID DE BUSCA:
-$id = 5;
+echo "Listar por ID\nInforme o ID:";
+$id = trim(fgets(STDIN));
 
 $caminhoBanco = __DIR__ . '/banco.sqlite';
 $pdo = new PDO('sqlite:' . $caminhoBanco);
@@ -19,5 +19,8 @@ if ($studentData = $result->fetch(PDO::FETCH_ASSOC)) {
         new DateTimeImmutable($studentData['birth_date'])
     );
 
-    echo $student->name() . PHP_EOL;
+    echo "\nAluno encontrado:\nNOME: " . $student->name() . "\nIdade: " . $student->age();
+    exit();
 }
+
+echo 'Nenhum aluno encontrado.';
