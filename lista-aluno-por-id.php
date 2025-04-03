@@ -1,14 +1,14 @@
 <?php
 
 use Alura\Pdo\Domain\Model\Student;
+use Alura\Pdo\Infrastructure\Persistence\ConnectionBD;
 
 require_once 'vendor/autoload.php';
 
+$pdo = ConnectionBD::createConnection();
+
 echo "Listar por ID\nInforme o ID:";
 $id = trim(fgets(STDIN));
-
-$caminhoBanco = __DIR__ . '/banco.sqlite';
-$pdo = new PDO('sqlite:' . $caminhoBanco);
 
 $result = $pdo->query( "SELECT * FROM students WHERE id = $id;");
 

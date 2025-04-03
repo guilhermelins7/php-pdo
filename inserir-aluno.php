@@ -1,12 +1,11 @@
 <?php
 
 use Alura\Pdo\Domain\Model\Student;
+use Alura\Pdo\Infrastructure\Persistence\ConnectionBD;
 
 require_once 'vendor/autoload.php';
 
-// Chamando diretório atual:
-$caminhoBanco = __DIR__ . '/banco.sqlite';
-$pdo = new PDO('sqlite:' . $caminhoBanco);
+$pdo = ConnectionBD::createConnection();
 
 echo "Adicionar aluno:\nInforme o nome: ";
 $nomeAluno = trim(fgets(STDIN));

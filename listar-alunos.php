@@ -1,12 +1,11 @@
 <?php
 
 use Alura\Pdo\Domain\Model\Student;
+use Alura\Pdo\Infrastructure\Persistence\ConnectionBD;
 
 require_once 'vendor/autoload.php';
 
-$caminhoBanco = __DIR__ . '/banco.sqlite';
-$pdo = new PDO('sqlite:' . $caminhoBanco);
-
+$pdo = ConnectionBD::createConnection();
 
 $result = $pdo->query( 'SELECT * FROM students;');
 // Atribuindo array associativo (propriedades = nome das colunas) à $studentDataList.
