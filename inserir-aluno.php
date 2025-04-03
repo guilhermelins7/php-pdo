@@ -1,11 +1,11 @@
 <?php
 
 use Alura\Pdo\Domain\Model\Student;
-use Alura\Pdo\Infrastructure\Persistence\ConnectionBD;
+use Alura\Pdo\Infrastructure\Repository\PdoStudentRepository;
 
 require_once 'vendor/autoload.php';
 
-$pdo = ConnectionBD::createConnection();
+$studentService = new PdoStudentRepository();
 
 echo "Adicionar aluno:\nInforme o nome: ";
 $nomeAluno = trim(fgets(STDIN));
@@ -19,14 +19,7 @@ $student = new Student(
     new DateTimeImmutable($dataNascimento)
 );
 
-$sqlInsert = "INSERT INTO students (name, birth_date) VALUES (:name , :birth_date);";
-// Preparando a query para execução:
-$statement = $pdo->prepare($sqlInsert);
-// Associando o placeholder com os dados do Objeto:
-$statement->bindValue(':name', $student->name());
-$statement->bindValue(':birth_date', $student->birthDate()->format('Y-m-d'));
-
-if($statement->execute()) {
+if($studentService->save($student)) {
     echo 'Aluno incluido!';
     exit();
 }

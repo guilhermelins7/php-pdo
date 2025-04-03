@@ -1,20 +1,15 @@
 <?php
 
-use Alura\Pdo\Domain\Model\Student;
-use Alura\Pdo\Infrastructure\Persistence\ConnectionBD;
+use Alura\Pdo\Infrastructure\Repository\PdoStudentRepository;
 
 require_once 'vendor/autoload.php';
 
-$pdo = ConnectionBD::createConnection();
+$studentService = new PdoStudentRepository();
 
 echo "Deletar aluno\nInforme o ID:";
 $idDelete = trim(fgets(STDIN));
 
-$statment = $pdo->prepare("DELETE FROM students WHERE id = :id");
-// Definindo o bindValue como inteiro.
-$statment->bindValue(':id', $idDelete, PDO::PARAM_INT);
-
-$result = $statment->execute();
+$result = $studentService->remove($idDelete);
 if ($result) {
     echo $result . " excluido."; exit();
 }
