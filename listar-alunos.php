@@ -7,7 +7,8 @@ use Alura\Pdo\Infrastructure\Persistence\ConnectionBD;
 
 use Alura\Pdo\Infrastructure\Repository\PdoStudentRepository;
 
-$studentService = new PdoStudentRepository();
+$connection = ConnectionBD::createConnection();
+$studentService = new PdoStudentRepository($connection);
 
 $studentList = $studentService->allStudents();
 

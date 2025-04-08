@@ -12,11 +12,12 @@ use DateTimeImmutable;
 
 class PdoStudentRepository implements IStudentRepository
 {
+    // Injetando dependência da conexão com Banco: ...
     private \PDO $connection;
-
-    public function __construct()
+    // ... 
+    public function __construct(PDO $connection)
     {
-        $this->connection = ConnectionBD::createConnection();
+        $this->connection = $connection;
     }
 
     public function allStudents(): array
@@ -24,6 +25,28 @@ class PdoStudentRepository implements IStudentRepository
         $stmt = $this->connection->query('SELECT * FROM students;');
         return $this->hydrateStudentList($stmt);
     }
+
+    public function studentByID(int $id): Student
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM students WHERE id = :id;");
+        $stmt->execute(['id' => $id]);
+    
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        if (!$row) {
+            echo "Estudante não encontrado.";
+            exit();
+        }
+    
+        $student = new Student(
+            $row['id'],
+            $row['name'],
+            new DateTimeImmutable($row['birth_date'])
+        );
+    
+        return $student;
+    }
+    
 
     public function studentsBirthAt(DateTimeInterface $birthDate): array
     {

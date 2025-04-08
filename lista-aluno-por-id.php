@@ -2,24 +2,20 @@
 
 use Alura\Pdo\Domain\Model\Student;
 use Alura\Pdo\Infrastructure\Persistence\ConnectionBD;
+use Alura\Pdo\Infrastructure\Repository\PdoStudentRepository;
 
 require_once 'vendor/autoload.php';
 
-$pdo = ConnectionBD::createConnection();
+$connection = ConnectionBD::createConnection();
+$studentService = new PdoStudentRepository($connection);
 
 echo "Listar por ID\nInforme o ID:";
 $id = trim(fgets(STDIN));
 
-$result = $pdo->query( "SELECT * FROM students WHERE id = $id;");
+$student = $studentService->studentByID($id);
 
-if ($studentData = $result->fetch(PDO::FETCH_ASSOC)) {
-    $student = new Student(
-        $studentData['id'],
-        $studentData['name'],
-        new DateTimeImmutable($studentData['birth_date'])
-    );
-
-    echo "\nAluno encontrado:\nNOME: " . $student->name() . "\nIdade: " . $student->age();
+if($student) {
+    echo "\nEstudante ID: {$student->id()}\nNome: {$student->name()}\nData de Nascimento: {$student->birthDate()->format('Y-m-d')}\n";
     exit();
 }
 

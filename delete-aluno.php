@@ -1,10 +1,12 @@
 <?php
 
+use Alura\Pdo\Infrastructure\Persistence\ConnectionBD;
 use Alura\Pdo\Infrastructure\Repository\PdoStudentRepository;
 
 require_once 'vendor/autoload.php';
 
-$studentService = new PdoStudentRepository();
+$connection = ConnectionBD::createConnection();
+$studentService = new PdoStudentRepository($connection);
 
 echo "Deletar aluno\nInforme o ID:";
 $idDelete = trim(fgets(STDIN));

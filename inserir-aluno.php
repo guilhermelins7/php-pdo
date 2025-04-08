@@ -2,10 +2,12 @@
 
 use Alura\Pdo\Domain\Model\Student;
 use Alura\Pdo\Infrastructure\Repository\PdoStudentRepository;
+use Alura\Pdo\Infrastructure\Persistence\ConnectionBD;
 
 require_once 'vendor/autoload.php';
 
-$studentService = new PdoStudentRepository();
+$connection = ConnectionBD::createConnection();
+$studentService = new PdoStudentRepository($connection);
 
 echo "Adicionar aluno:\nInforme o nome: ";
 $nomeAluno = trim(fgets(STDIN));
