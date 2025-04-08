@@ -32,7 +32,7 @@ class PdoStudentRepository implements IStudentRepository
         $stmt = $this->connection->prepare("SELECT * FROM students WHERE id = :id;");
         $stmt->execute(['id' => $id]);
     
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch();
     
         if (!$row) {
             echo "Estudante não encontrado.";
@@ -58,7 +58,7 @@ class PdoStudentRepository implements IStudentRepository
 
     public function hydrateStudentList(\PDOStatement $stmt): array
     {
-        $studentDataList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $studentDataList = $stmt->fetchAll();
         $studentList = [];
 
         foreach ( $studentDataList as $studentData) {
@@ -80,7 +80,7 @@ class PdoStudentRepository implements IStudentRepository
 
     public function insert(Student $student): bool
     {
-        $sqlInsert = "INSERT INTO studenta (name, birth_date) VALUES (:name , :birth_date);";
+        $sqlInsert = "INSERT INTO students (name, birth_date) VALUES (:name , :birth_date);";
         // Preparando a query para execução:
         $statement = $this->connection->prepare($sqlInsert);
         if($statement === false) 
