@@ -9,6 +9,7 @@ use Alura\Pdo\Infrastructure\Persistence\ConnectionBD;
 use PDO;
 use DateTimeInterface;
 use DateTimeImmutable;
+use RuntimeException;
 
 class PdoStudentRepository implements IStudentRepository
 {
@@ -79,11 +80,13 @@ class PdoStudentRepository implements IStudentRepository
 
     public function insert(Student $student): bool
     {
-        $sqlInsert = "INSERT INTO students (name, birth_date) VALUES (:name , :birth_date);";
+        $sqlInsert = "INSERT INTO studenta (name, birth_date) VALUES (:name , :birth_date);";
         // Preparando a query para execução:
         $statement = $this->connection->prepare($sqlInsert);
+        if($statement === false) 
+            throw new RuntimeException($this->connection->errorInfo()[2]);
+
         // Associando o placeholder com os dados do Objeto:
-        
         $result = $statement->execute(
             [
                 ':name' => $student->name(),
