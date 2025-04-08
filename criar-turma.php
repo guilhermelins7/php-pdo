@@ -1,0 +1,25 @@
+<?php 
+use Alura\Pdo\Infrastructure\Persistence\ConnectionBD;
+use Alura\Pdo\Infrastructure\Repository\PdoStudentRepository;
+use Alura\Pdo\Domain\Model\Student; // Import the Student class
+
+require_once 'vendor/autoload.php';
+
+$connection = ConnectionBD::createConnection();
+$studentRepository = new PdoStudentRepository($connection);
+
+// Processos de definição da turma.
+
+
+// Definindo transação no Banco de Dados:
+$connection->beginTransaction();
+
+$aStudent = new Student(null, 'Nico Steppat', new DateTimeImmutable('1985-05-01'));
+$studentRepository->save($aStudent);
+
+$bStudent = new Student(null, 'Maria da Silva', new DateTimeImmutable('1990-06-15'));
+$studentRepository->save($bStudent);
+
+$connection->commit();
+
+?>
