@@ -63,40 +63,37 @@ class PdoStudentRepository implements IStudentRepository
         $studentList = [];
 
         foreach ( $studentDataList as $studentData) {
-            $student = new Student(
+            $studentList[] = new Student(
                 $studentData['id'],
                 $studentData['name'],
                 new DateTimeImmutable($studentData['birth_date']),
             );
-
-            $this->fillPhonesOf($student);
-
-            $studentList[] = $student;
         }
 
         return $studentList;
     }
 
-    public function fillPhonesOf(Student $student): void
-    {
-        $sqlQuery = "SELECT * FROM phones WHERE student_id = :student_id;";
-        $stmt = $this->connection->prepare($sqlQuery);
-        $stmt->bindValue(':student_id', $student->id(), PDO::PARAM_INT);
-        $stmt->execute();
+    /* Método para adicionar a visualização dos telefones à allStudents() */
+    // private function fillPhonesOf(Student $student): void
+    // {
+    //     $sqlQuery = "SELECT * FROM phones WHERE student_id = :student_id;";
+    //     $stmt = $this->connection->prepare($sqlQuery);
+    //     $stmt->bindValue(':student_id', $student->id(), PDO::PARAM_INT);
+    //     $stmt->execute();
 
-        $phoneDataList = $stmt->fetchAll();
+    //     $phoneDataList = $stmt->fetchAll();
 
-        foreach ($phoneDataList as $phoneData) {
-            $student->addPhone(
-                new Phone(
-                    $phoneData['id'],
-                    $phoneData['area_code'],
-                    $phoneData['number'],
-                    $student->id()
-                )
-            );
-        }
-    }
+    //     foreach ($phoneDataList as $phoneData) {
+    //         $student->addPhone(
+    //             new Phone(
+    //                 $phoneData['id'],
+    //                 $phoneData['area_code'],
+    //                 $phoneData['number'],
+    //                 $student->id()
+    //             )
+    //         );
+    //     }
+    // }
 
     public function save(Student $student): bool
     {   
@@ -146,5 +143,33 @@ class PdoStudentRepository implements IStudentRepository
         $statment->bindValue(':id', $studentID, PDO::PARAM_INT);
 
         return $statment->execute();
+    }
+
+    public function studentsWithPhones(): array
+    {
+        $sqlQuery = "SELECT students.id, students.name, students.birth_date, phones.area_code, phones.number FROM students JOIN phones ON students.id = phones.student_id;";
+        $stmt = $this->connection->query($sqlQuery);
+        $studentDataList = $stmt->fetchAll();
+        $studentList = [];
+
+        foreach($studentDataList as $studentData) {
+            $studentID = $studentData['id'];
+            if (!isset($studentList[$studentID])) {
+                $studentList[$studentID] = new Student(
+                    $studentID,
+                    $studentData['name'],
+                    new DateTimeImmutable($studentData['birth_date'])
+                );
+            }
+            $studentList[$studentID]->addPhone(
+                new Phone(
+                    null,
+                    $studentData['area_code'],
+                    $studentData['number'],
+                    $studentID
+                )
+            );
+        }
+        return array_values($studentList);
     }
 }

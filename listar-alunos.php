@@ -15,10 +15,10 @@ $studentList = $studentService->allStudents();
 
 foreach ($studentList as $student) {
     echo "\n\nID: {$student->id()}\nAluno: {$student->name()}\nIdade: {$student->age()}";
-    if($student->phones()) {
-        echo "\nNúmeros de Telefone:\n";
-        foreach ($student->phones() as $phone) {
-            echo "{$phone->formattedPhone()}\n";
-        }
-    }
+    // if($student->phones()) {
+    //     echo "\nNúmeros de Telefone:\n";
+    //     foreach ($student->phones() as $phone) {
+    //         echo "{$phone->formattedPhone()}\n";
+    //     }
+    // }
 }
