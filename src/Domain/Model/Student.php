@@ -17,6 +17,7 @@ class Student
         $this->id = $id;
         $this->name = $name;
         $this->birthDate = $birthDate;
+        $this->phones = [];
     }
 
     public function id(): ?int

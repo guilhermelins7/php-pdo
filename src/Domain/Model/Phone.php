@@ -18,6 +18,16 @@ class Phone {
     {
         return "({$this->areaCode}) {$this->number}";
     }
+
+    public function areaCode(): string
+    {
+        return $this->areaCode;
+    }
+
+    public function number(): string
+    {
+        return $this->number;
+    }
 }
 
 ?>

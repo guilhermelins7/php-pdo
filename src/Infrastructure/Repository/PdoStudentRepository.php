@@ -66,7 +66,7 @@ class PdoStudentRepository implements IStudentRepository
             $student = new Student(
                 $studentData['id'],
                 $studentData['name'],
-                new DateTimeImmutable($studentData['birth_date'])
+                new DateTimeImmutable($studentData['birth_date']),
             );
 
             $this->fillPhonesOf($student);
