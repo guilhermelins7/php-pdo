@@ -14,7 +14,7 @@ $students = $studentRepository->studentsWithPhones();
 foreach ($students as $student) {
     echo $student->name() . PHP_EOL;
     foreach ($student->phones() as $phone) {
-        echo 'Telefone: ' . $phone->number() . PHP_EOL;
+        echo "Telefone: {$phone->formattedPhone()}" . PHP_EOL;
     }
     echo PHP_EOL;
 }
